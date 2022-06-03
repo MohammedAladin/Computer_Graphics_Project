@@ -18,27 +18,7 @@ int Round(double x)
 {
     return (int)x + 0.5;
 }
-void DrawQuarter(HDC hdc, int xc, int yc, int a, int b, int quarter, COLORREF c)
-{
-    if (quarter == 1) {
-        SetPixel(hdc, xc + a, yc - b, c);
-        SetPixel(hdc, xc + b, yc - a, c);
-    }
-    else if (quarter == 2) {
-        SetPixel(hdc, xc + a, yc + b, c);
-        SetPixel(hdc, xc + b, yc + a, c);
 
-    }
-    else if (quarter == 3) {
-        SetPixel(hdc, xc - a, yc + b, c);
-        SetPixel(hdc, xc - b, yc + a, c);
-    }
-    else {
-        SetPixel(hdc, xc - b, yc - a, c);
-        SetPixel(hdc, xc - a, yc - b, c);
-
-    }
-}
 void Draw8points(HDC hdc, int xc, int yc, int x, int y, COLORREF c)
 {
     SetPixel(hdc, xc + x, yc + y, c);
@@ -50,41 +30,6 @@ void Draw8points(HDC hdc, int xc, int yc, int x, int y, COLORREF c)
     SetPixel(hdc, xc - y, yc - x, c);
     SetPixel(hdc, xc - y, yc + x, c);
 }
-
-void fillingQuarter_circle(HDC hdc, int xc, int yc, int R, int quarter, COLORREF c)
-{
-    double x = R, y = 0;
-    double dtheta = (double)1 / R;
-    double st = sin(dtheta), ct = cos(dtheta);
-
-    while (x > y)
-    {
-        double x1 = x * ct - y * st;
-        y = x * st + y * ct;
-        x = x1;
-        Draw8points(hdc, xc, yc, Round(x), Round(y), c);
-    }
-
-
-    while (R) {
-        dtheta = (double)1 / R;
-        st = sin(dtheta);
-        ct = cos(dtheta);
-        x = R;
-        y = 0;
-        while (x > y)
-        {
-            double x1 = x * ct - y * st;
-            y = x * st + y * ct;
-            x = x1;
-            DrawQuarter(hdc, xc, yc, Round(x), Round(y), quarter, c);
-        }
-        R--;
-
-    }
-}
-
-
 void DrawCircleDirect(HDC hdc, int xc, int yc, int R, COLORREF color)
 {
     double x = 0;
@@ -483,7 +428,27 @@ void DrawMidpointEllipse(HDC hdc, int xc, int yc, int A, int B, COLORREF color)
 /*_________________________END Elips_______________________________*/
 
 /*--------------Start Filling-----------------------*/
+void DrawQuarter(HDC hdc, int xc, int yc, int a, int b, int quarter, COLORREF c)
+{
+    if (quarter == 1) {
+        SetPixel(hdc, xc + a, yc - b, c);
+        SetPixel(hdc, xc + b, yc - a, c);
+    }
+    else if (quarter == 2) {
+        SetPixel(hdc, xc + a, yc + b, c);
+        SetPixel(hdc, xc + b, yc + a, c);
 
+    }
+    else if (quarter == 3) {
+        SetPixel(hdc, xc - a, yc + b, c);
+        SetPixel(hdc, xc - b, yc + a, c);
+    }
+    else {
+        SetPixel(hdc, xc - b, yc - a, c);
+        SetPixel(hdc, xc - a, yc - b, c);
+
+    }
+}
 void DrawQuarter_line(HDC hdc, int xc, int yc, int a, int b, int quarter, COLORREF c)
 {
     if (quarter == 1) {
@@ -505,7 +470,38 @@ void DrawQuarter_line(HDC hdc, int xc, int yc, int a, int b, int quarter, COLORR
 
     }
 }
+void fillingQuarter_circle(HDC hdc, int xc, int yc, int R, int quarter, COLORREF c)
+{
+    double x = R, y = 0;
+    double dtheta = (double)1 / R;
+    double st = sin(dtheta), ct = cos(dtheta);
 
+    while (x > y)
+    {
+        double x1 = x * ct - y * st;
+        y = x * st + y * ct;
+        x = x1;
+        Draw8points(hdc, xc, yc, Round(x), Round(y), c);
+    }
+
+
+    while (R) {
+        dtheta = (double)1 / R;
+        st = sin(dtheta);
+        ct = cos(dtheta);
+        x = R;
+        y = 0;
+        while (x > y)
+        {
+            double x1 = x * ct - y * st;
+            y = x * st + y * ct;
+            x = x1;
+            DrawQuarter(hdc, xc, yc, Round(x), Round(y), quarter, c);
+        }
+        R--;
+
+    }
+}
 void fillingQuarter_Line(HDC hdc, int xc, int yc, int R, int quarter, COLORREF c)
 {
     double x = R, y = 0;
